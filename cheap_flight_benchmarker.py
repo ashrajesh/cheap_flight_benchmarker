@@ -59,7 +59,6 @@ def confirm():
         else:
             x = 1
 
-
 def append_row_csv(file_name, elements):
     with open(file_name, 'a+', newline='') as towrite:
         csvwriter = writer(towrite)
@@ -72,15 +71,16 @@ def task():
     driver = webdriver.Chrome(ChromeDriverManager().install(), chrome_options=options)
     driver.get(finalurl)
     time.sleep(1.5)
-    print("\n"+driver.find_element_by_css_selector(".gws-flights-results__cheapest-price").text)
-    price = driver.find_element_by_css_selector(".gws-flights-results__cheapest-price").text
+    p = driver.find_element_by_css_selector(".gws-flights-results__cheapest-price").text
+    price = p[2:] #remove first two elements of string
+    print("\n"+price)
     print("\n"+"Airline with best fare: "+driver.find_element_by_css_selector(".gws-flights-results__carriers").text)
     airline = driver.find_element_by_css_selector(".gws-flights-results__carriers").text
     print("Flight time: "+driver.find_element_by_css_selector(".gws-flights-results__times-row").text)
     driver.quit()
     current_time = datetime.datetime.now()
     row = [price, airline, current_time]
-    append_row_csv('output_file.csv', row)
+    append_row_csv('outputted_file.csv', row)
 
 confirm()
 task()
